@@ -2,6 +2,7 @@ package com.spiritlight.collab.lootrun.beacon;
 
 import com.spiritlight.collab.lootrun.beacon.characteristics.BeaconCharacteristics;
 import com.spiritlight.collab.lootrun.beacon.characteristics.Characteristic;
+import com.spiritlight.collab.utils.ArgumentType;
 
 import java.util.Set;
 
@@ -28,11 +29,11 @@ public enum BeaconColor {
 
     public Set<BeaconCharacteristics> defaultCharacteristics() {
         return switch(this) {
-            case AQUA -> Set.of(Characteristic.AMPLIFIER.asCharacteristic(1));
+            case AQUA -> Set.of(Characteristic.AMPLIFIER.asCharacteristic(ArgumentType.MULTIPLIER, 1));
             case BLUE -> Set.of(Characteristic.POWER_UP.asCharacteristic());
             case DARK_GRAY -> Set.of(Characteristic.CURSE.asCharacteristic(3), Characteristic.EXTRA_ROLL.asCharacteristic(5));
             case GRAY -> Set.of(Characteristic.END_REROLL_BONUS.asCharacteristic(1));
-            case GREEN -> Set.of(Characteristic.EXTRA_TIME.asCharacteristic(120));
+            case GREEN -> Set.of(Characteristic.EXTRA_TIME.asCharacteristic(ArgumentType.TIME,120));
             case ORANGE -> Set.of(Characteristic.EXTRA_BEACON_CHOICE.asCharacteristic(1));
             case PURPLE -> Set.of(Characteristic.CURSE.asCharacteristic(1), Characteristic.EXTRA_ROLL.asCharacteristic(1));
             case RAINBOW -> Set.of(Characteristic.ALL_VIBRANT.asCharacteristic());

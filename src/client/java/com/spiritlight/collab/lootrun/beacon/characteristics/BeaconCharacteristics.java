@@ -1,18 +1,22 @@
 package com.spiritlight.collab.lootrun.beacon.characteristics;
 
+import com.spiritlight.collab.utils.ArgumentType;
+
 import java.util.Objects;
 
 public class BeaconCharacteristics {
     private final Characteristic characteristic;
+    private final ArgumentType type;
     private final int value;
 
-    public BeaconCharacteristics(Characteristic characteristic, int value) {
+    public BeaconCharacteristics(Characteristic characteristic, ArgumentType type, int value) {
         this.characteristic = characteristic;
+        this.type = type;
         this.value = value;
     }
 
-    public static BeaconCharacteristics of(Characteristic key, int value) {
-        return new BeaconCharacteristics(key, value);
+    public static BeaconCharacteristics of(Characteristic key, ArgumentType type, int value) {
+        return new BeaconCharacteristics(key, type, value);
     }
 
     /**
@@ -35,6 +39,10 @@ public class BeaconCharacteristics {
 
     public boolean hasValue() {
         return value != 0;
+    }
+
+    public ArgumentType type() {
+        return type;
     }
 
     @Override

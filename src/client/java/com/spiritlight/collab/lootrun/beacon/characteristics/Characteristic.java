@@ -1,5 +1,7 @@
 package com.spiritlight.collab.lootrun.beacon.characteristics;
 
+import com.spiritlight.collab.utils.ArgumentType;
+
 public enum Characteristic {
     CURSE("Buffed enemy stats"),
     EXTRA_ROLL("Extra reward roll"),
@@ -25,11 +27,15 @@ public enum Characteristic {
         return description;
     }
 
+    public BeaconCharacteristics asCharacteristic(ArgumentType type, int value) {
+        return BeaconCharacteristics.of(this, type, value);
+    }
+
     public BeaconCharacteristics asCharacteristic(int value) {
-        return BeaconCharacteristics.of(this, value);
+        return BeaconCharacteristics.of(this, ArgumentType.VALUE, value);
     }
 
     public BeaconCharacteristics asCharacteristic() {
-        return BeaconCharacteristics.of(this, 0);
+        return BeaconCharacteristics.of(this, ArgumentType.VALUE, 0);
     }
 }

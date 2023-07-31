@@ -4,7 +4,7 @@ import com.spiritlight.collab.lootrun.beacon.characteristics.BeaconCharacteristi
 
 import java.util.Set;
 
-public class Beacon implements IBeacon {
+public class Beacon{
 
     private final String name;
     private final BeaconColor color;
@@ -20,26 +20,23 @@ public class Beacon implements IBeacon {
         this(color.name() + " Beacon", color, color.defaultCharacteristics());
     }
 
-    public static IBeacon of(BeaconColor color) {
+    public static Beacon of(BeaconColor color) {
         return new Beacon(color);
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public BeaconColor getColor() {
         return color;
     }
 
-    @Override
     public Set<BeaconCharacteristics> characteristics() {
         return characteristics;
     }
 
-    public IBeacon copy() {
+    public Beacon copy() {
         return new Beacon(name, color, characteristics);
     }
 }
