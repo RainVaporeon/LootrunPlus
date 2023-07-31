@@ -26,17 +26,17 @@ public class Beacon implements IBeacon {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public BeaconColor getColor() {
-        return null;
+        return color;
     }
 
     @Override
     public Set<BeaconCharacteristics> characteristics() {
-        return null;
+        return characteristics;
     }
 
     public IBeacon copy() {
