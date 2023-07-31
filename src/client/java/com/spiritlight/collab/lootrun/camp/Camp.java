@@ -1,6 +1,6 @@
 package com.spiritlight.collab.lootrun.camp;
 
-public interface Camp {
-
-
+public enum Camp {
+    THE_CORKUS_TRAVERSAL,
+    SILENT_EXPANSE_EXPEDITION
 }

@@ -1,4 +1,4 @@
-package com.spiritlight.collab.beacon;
+package com.spiritlight.collab.lootrun.beacon;
 
 public enum BeaconTask {
     SPELUNK("Loot all chests in this cave"),
