@@ -1,20 +1,29 @@
 package com.spiritlight.collab.lootrun.beacon;
 
-import com.google.common.annotations.Beta;
 import com.spiritlight.collab.lootrun.beacon.characteristics.BeaconCharacteristics;
-import com.spiritlight.collab.lootrun.camp.Camp;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.HashSet;
+import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * An object representing a Beacon in the lootrun.
+ * <p>
+ * This object contains information such as the beacon type,
+ * the node location (which also contains the originated camp),
+ * as well as the task. Additionally, the beacon may contain
+ * some characteristics.
+
+ */
 public class Beacon {
+
+    private static final DecimalFormat defaultFormatter = new DecimalFormat("0.00");
 
     private final BeaconType type;
     private final BeaconNode node;
@@ -22,7 +31,6 @@ public class Beacon {
     private final BeaconTask task;
     private final Set<BeaconCharacteristics> characteristics;
     private boolean used;
-    private static final Set<Beacon> REGISTRY = new HashSet<>();
 
     /* delegate used for jackson deserialization, not intended for use */
     private Beacon() {
@@ -40,7 +48,6 @@ public class Beacon {
         this.task = task;
         this.characteristics = type.defaultCharacteristics();
         this.used = false;
-        REGISTRY.add(this);
     }
 
     public void use() {
@@ -55,6 +62,11 @@ public class Beacon {
         return node;
     }
 
+    /**
+     * Retrieves the distance (in blocks) from the current player to the beacon's node
+     * @return {@link Double#NaN} if player is null, otherwise the length from the
+     * player to the node.
+     */
     public double getDistance() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
@@ -63,11 +75,15 @@ public class Beacon {
         return this.node.subtract(player.getPos()).length();
     }
 
+    /**
+     * Retrieves the text representation of this element
+     * @return
+     */
     public Text toText() {
         return type.toText().append(
             Text.literal(": ").setStyle(Style.EMPTY.withColor(type.getFormatting()))).append(
             Text.literal(locationName + " - " + task.toString().toLowerCase()).setStyle(Style.EMPTY.withColor(Formatting.WHITE))).append(
-            Text.literal(" (" + (int)getDistance() + "m)").setStyle(Style.EMPTY.withColor(Formatting.GRAY))
+            Text.literal(" (" + defaultFormatter.format(this.getDistance()) + "m)").setStyle(Style.EMPTY.withColor(Formatting.GRAY))
         );
     }
 
@@ -75,16 +91,13 @@ public class Beacon {
         return task;
     }
 
+    @Unmodifiable
     public Set<BeaconCharacteristics> getCharacteristics() {
         return Set.copyOf(characteristics);
     }
 
     public boolean isUsed() {
         return used;
-    }
-
-    public static Set<Beacon> getRegistry() {
-        return Set.copyOf(REGISTRY);
     }
 
     @Override

@@ -2,6 +2,10 @@ package com.spiritlight.collab.lootrun.beacon;
 
 import com.spiritlight.collab.utils.StringUtils;
 
+/**
+ * A simple enum representing all possible tasks a beacon
+ * may have.
+ */
 public enum BeaconTask {
     SPELUNK("Loot all chests in this cave"),
     SLAY("Slay all mob waves"),
@@ -16,6 +20,10 @@ public enum BeaconTask {
         this.description = description;
     }
 
+    /**
+     * Retrieves the task description
+     * @return
+     */
     public String getDescription() {
         return description;
     }

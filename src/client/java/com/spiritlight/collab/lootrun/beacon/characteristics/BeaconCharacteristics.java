@@ -61,9 +61,13 @@ public class BeaconCharacteristics {
 
     @Override
     public String toString() {
-        return "BeaconCharacteristics[" +
-                "characteristic=" + characteristic + ", " +
-                "value=" + value + ']';
+        if(this.value == 0) return this.characteristic.getDescription();
+
+        return switch (type) {
+            case VALUE -> this.characteristic.getDescription() + " (+" + value + ")";
+            case TIME -> this.characteristic.getDescription() + " (+" + value + " seconds)";
+            case MULTIPLIER -> this.characteristic.getDescription() + " (" + (value + 1) + "x)";
+        };
     }
 
 }

@@ -5,6 +5,13 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.Objects;
 
+/**
+ * A node representing the location of this beacon.
+ * <p>
+ * The node extends from {@link Vec3d} for arithmetic support
+ * and this object holds a {@link Camp} denoting the originated
+ * owner.
+ */
 public class BeaconNode extends Vec3d {
     private final Camp owner;
 

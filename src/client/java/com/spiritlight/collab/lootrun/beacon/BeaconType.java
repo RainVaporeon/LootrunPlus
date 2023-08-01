@@ -3,6 +3,7 @@ package com.spiritlight.collab.lootrun.beacon;
 import com.spiritlight.collab.lootrun.beacon.characteristics.BeaconCharacteristics;
 import com.spiritlight.collab.lootrun.beacon.characteristics.Characteristic;
 import com.spiritlight.collab.utils.ArgumentType;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -29,14 +30,29 @@ public enum BeaconType {
         this.maxUses = maxUses;
     }
 
+    /**
+     * Retrieves the max uses for this beacon
+     */
     public int getMaxUses() {
         return maxUses;
     }
 
+    /**
+     * Retrieves the default characteristics for this beacon type
+     * <p></p>
+     * Call to this method is same as calling {@link BeaconType#defaultCharacteristics()}
+     *
+     * @see BeaconType#defaultCharacteristics()
+     */
     public static Set<BeaconCharacteristics> defaultCharacteristics(BeaconType color) {
         return color.defaultCharacteristics();
     }
 
+    /**
+     * Retrieves the default characteristics for this beacon type
+     * <p></p>
+     * The returned characteristic set is immutable.
+     */
     public Set<BeaconCharacteristics> defaultCharacteristics() {
         return switch(this) {
             case AQUA -> Set.of(Characteristic.AMPLIFIER.asCharacteristic(ArgumentType.MULTIPLIER, 1));
@@ -53,8 +69,13 @@ public enum BeaconType {
         };
     }
 
+    /**
+     * Retrieves a {@link Text} representation of this beacon type.
+     * @return A {@link MutableText} instance containing the text representation of
+     * this type, with a hover over for all (default) characteristics.
+     */
     public MutableText toText() {
-        return switch(this) {
+        MutableText mt = switch(this) {
             case BLUE -> Text.literal(this.toString()).setStyle(Style.EMPTY.withColor(Formatting.BLUE));
             case PURPLE -> Text.literal(this.toString()).setStyle(Style.EMPTY.withColor(Formatting.DARK_PURPLE));
             case YELLOW -> Text.literal(this.toString()).setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
@@ -73,6 +94,17 @@ public enum BeaconType {
                             Text.literal("O").setStyle(Style.EMPTY.withColor(Formatting.DARK_PURPLE)).append(
                             Text.literal("W").setStyle(Style.EMPTY.withColor(Formatting.LIGHT_PURPLE))))))));
         };
+
+        StringBuilder builder = new StringBuilder(Formatting.GOLD + "Beacon Characteristics:" + "\n");
+
+        // There's an extra linebreak regardless, though it should not be too much of a concern.
+        for(BeaconCharacteristics characteristics : this.defaultCharacteristics()) {
+            builder.append(characteristics.toString()).append("\n");
+        }
+
+        Style style = mt.getStyle();
+
+        return mt.setStyle(style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of(builder.toString()))));
     }
 
     public Formatting getFormatting() {
