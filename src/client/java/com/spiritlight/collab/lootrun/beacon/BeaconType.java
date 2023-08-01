@@ -11,9 +11,9 @@ import net.minecraft.util.Formatting;
 import java.util.Set;
 
 public enum BeaconType {
-    BLUE(Float.POSITIVE_INFINITY),
-    PURPLE(Float.POSITIVE_INFINITY),
-    YELLOW(Float.POSITIVE_INFINITY),
+    BLUE(Integer.MAX_VALUE),
+    PURPLE(Integer.MAX_VALUE),
+    YELLOW(Integer.MAX_VALUE),
     AQUA(10),
     ORANGE(2),
     GRAY(1),
@@ -23,13 +23,13 @@ public enum BeaconType {
     RED(10),
     RAINBOW(1);
 
-    private final float maxUses;
+    private final int maxUses;
 
-    BeaconType(float maxUses) {
+    BeaconType(int maxUses) {
         this.maxUses = maxUses;
     }
 
-    public float getMaxUses() {
+    public int getMaxUses() {
         return maxUses;
     }
 
