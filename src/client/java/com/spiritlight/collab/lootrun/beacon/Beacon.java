@@ -1,5 +1,6 @@
 package com.spiritlight.collab.lootrun.beacon;
 
+import com.google.common.annotations.Beta;
 import com.spiritlight.collab.lootrun.beacon.characteristics.BeaconCharacteristics;
 import com.spiritlight.collab.lootrun.camp.Camp;
 import net.minecraft.client.MinecraftClient;
@@ -10,23 +11,31 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Beacon {
 
     private final BeaconType type;
-    private final Camp camp;
-    private final Vec3d location;
+    private final BeaconNode node;
     private final String locationName;
     private final BeaconTask task;
     private final Set<BeaconCharacteristics> characteristics;
     private boolean used;
     private static final Set<Beacon> REGISTRY = new HashSet<>();
 
-    public Beacon(BeaconType type, Camp camp, Vec3d location, String locationName, BeaconTask task) {
+    /* delegate used for jackson deserialization, not intended for use */
+    private Beacon() {
+        this.type = null;
+        this.node = null;
+        this.locationName = null;
+        this.task = null;
+        this.characteristics = null;
+    }
+
+    public Beacon(BeaconType type, BeaconNode node, String locationName, BeaconTask task) {
         this.type = type;
-        this.camp = camp;
-        this.location = location;
+        this.node = node;
         this.locationName = locationName;
         this.task = task;
         this.characteristics = type.defaultCharacteristics();
@@ -42,12 +51,8 @@ public class Beacon {
         return type;
     }
 
-    public Camp getCamp() {
-        return camp;
-    }
-
-    public Vec3d getLocation() {
-        return location;
+    public BeaconNode getNode() {
+        return node;
     }
 
     public double getDistance() {
@@ -55,7 +60,7 @@ public class Beacon {
         if (player == null) {
             return Double.NaN;
         }
-        return location.subtract(player.getPos()).length();
+        return this.node.subtract(player.getPos()).length();
     }
 
     public Text toText() {
@@ -80,5 +85,18 @@ public class Beacon {
 
     public static Set<Beacon> getRegistry() {
         return Set.copyOf(REGISTRY);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Beacon beacon = (Beacon) o;
+        return type == beacon.type && Objects.equals(node, beacon.node) && Objects.equals(locationName, beacon.locationName) && task == beacon.task && Objects.equals(characteristics, beacon.characteristics);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, node, locationName, task, characteristics);
     }
 }
